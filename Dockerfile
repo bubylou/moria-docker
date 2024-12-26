@@ -21,6 +21,12 @@ RUN mkdir -p "$APP_DIR" "$CONFIG_DIR" "$DATA_DIR" \
 	&& steamcmd +login anonymous +quit \
 	&& xvfb-run winetricks -q vcrun2019
 
+# Download the server from Steam
+RUN if [ "$RELEASE" = "full" ]; then steamcmd +force_install_dir "$APP_DIR" \
+	+@sSteamCmdForcePlatformType windows \
+	+login "$STEAM_USERNAME" "$STEAM_PASSWORD" "$STEAM_GUARD" \
+	+app_update "$APP_ID" validate +quit; fi
+
 VOLUME [ "$APP_DIR", "$CONFIG_DIR", "$DATA_DIR" ]
 
 # Check UDP connection on GAME_PORT

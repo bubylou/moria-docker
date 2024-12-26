@@ -10,13 +10,21 @@ variable "TAG" {
   default = "latest"
 }
 
+function "tags" {
+  params = [suffix]
+  result = ["ghcr.io/${REPO}:latest${suffix}", "ghcr.io/${REPO}:${TAG}${suffix}",
+            "docker.io/${REPO}:latest${suffix}", "docker.io/${REPO}:${TAG}${suffix}"]
+}
+
 target "image-dev" {
   inherits = ["image-release"]
   cache-from = ["type=registry,ref=ghcr.io/bubylou/moria"]
   cache-to = ["type=inline"]
+  args = {
+    "STEAMCMD_VERSION" = "latest-wine"
+  }
   env = {
-    "STEAMCMD_VERSION" = "latest"
-    "UPDATE_ON_START" = "false"
+    "UPDATE_ON_START" = "true"
     "RESET_SEED" = "true"
   }
 }
@@ -32,6 +40,13 @@ target "image-release" {
     "org.opencontainers.image.licenses" = "MIT"
   }
   platforms = ["linux/amd64"]
-  tags = ["ghcr.io/${REPO}:latest", "ghcr.io/${REPO}:${TAG}",
-          "docker.io/${REPO}:latest", "docker.io/${REPO}:${TAG}"]
+  tags = tags("")
+}
+
+target "image-full" {
+  inherits = ["image-release"]
+  args = {
+    "RELEASE" = "full"
+  }
+  tag = tags("-full")
 }
