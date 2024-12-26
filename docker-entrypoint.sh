@@ -17,8 +17,7 @@ if [[ ! -f $SETTINGS_FILE ]]; then
     ln -s "$CONFIG_DIR/MoriaServerConfig.ini" $SETTINGS_FILE
 
     echo "Setting ports in configuration file"
-    sed -i "s/ListenPort=7777/ListenPort=$LISTEN_PORT/" $SETTINGS_FILE
-    sed -i "s/AdvertisePort=-1/AdvertisePort=$GAME_PORT/" $SETTINGS_FILE
+    sed -i "s/ListenPort=7777/ListenPort=$GAME_PORT/" $SETTINGS_FILE
 fi
 
 SAVE_DIR="$APP_DIR/Moria/Saved"

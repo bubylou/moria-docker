@@ -12,10 +12,7 @@ ENV APP_ID=3349480 \
 	UPDATE_ON_START=false \
 	RESET_SEED=false \
 	STEAM_USERNAME=anonymous \
-	STEAM_PASSWORD="" \
-	STEAM_GUARD="" \
-	GAME_PORT=7777 \
-	LISTEN_PORT=7777
+	GAME_PORT=7777
 
 COPY ./MoriaServerConfig.ini $CONFIG_DIR/MoriaServerConfig.ini
 
@@ -30,6 +27,6 @@ VOLUME [ "$APP_DIR", "$CONFIG_DIR", "$DATA_DIR" ]
 HEALTHCHECK --interval=30s --start-period=30s --timeout=10s \
 	CMD ncat -uz 127.0.0.1 $GAME_PORT
 
-EXPOSE $GAME_PORT/udp $LISTEN_PORT/tcp
+EXPOSE $GAME_PORT/udp
 ADD docker-entrypoint.sh /docker-entrypoint.sh
 ENTRYPOINT [ "/docker-entrypoint.sh" ]
