@@ -24,7 +24,7 @@ RUN mkdir -p "$APP_DIR" "$CONFIG_DIR" "$DATA_DIR" \
 VOLUME [ "$APP_DIR", "$CONFIG_DIR", "$DATA_DIR" ]
 
 # Check UDP connection on GAME_PORT
-HEALTHCHECK --interval=30s --start-period=30s --timeout=10s \
+HEALTHCHECK --interval=1m --retries=5 --start-period=1m --timeout=10s \
 	CMD ncat -uz 127.0.0.1 $GAME_PORT
 
 EXPOSE $GAME_PORT/udp
